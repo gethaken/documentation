@@ -1,0 +1,214 @@
+FORMAT: 1A
+HOST: https://api.haken.run
+
+# Haken
+
+This API allows you to fully manage your webhook definitions. 
+A webhook is defined by a name and a unique identifier.
+### Authentication
+All requests must be authenticated. 
+For the management API you need to set the `Authentication` headers:
+`Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9`
+Unauthenticated requests will be rejected with a `401 Unauthorized`. 
+If you try to access a resource but your key is invalid we will return a `404 Not found`
+
+### API
+All requests are expecting a `Content-Type: application/json` header.
+
+# Group Hooks
+## Hooks Collections [/hooks]
+
+
+### GET
+Returns all the defined webhooks in your organization.
+You can set how many items per page you want to receive, and which page you want to get.
+
++ Parameters
+      + page: 1 (number, optional) - Defines the page number you are requesting
+        + Default: `1`
+      + limit: 40 (number, optional) - Defines how many entries per page should be returned
+        + Default: `20`
+
++ Request (application/json)
+
+  + Headers
+
+            X-Api-Version: v1
+            Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+
+
++ Response 200 (application/json)
+    + Attributes
+        - hooks (array[WebhookDefinition])
+
+### POST
+Creates a new webhook definition. 
+It will return the created webhook and the *secret* needed to submit new requests via the API
+
+
++ Request (application/json)
+    + Headers
+
+            X-Api-Version: v1
+            Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+    + Attributes (WebhookDefinition Create)
+
+
+
+
++ Response 201 (application/json)
+    + Attributes
+        - hook (WebhookDefinition Created)
+
+
+
+### Hook Resource [/hooks/{hook_id}]
+Working with individual webhook definitions.
+
++ Parameters
+    + hook_id: `50c09bd9-027d-4c60-a835-02b25026e046` (required, string) - ID of the Hook in form of an integer
+
+#### GET
+Returns an individual webhook definition.
+
++ Request (application/json)
+  + Headers
+
+              Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+              X-Api-Version: v1
+
+
++ Response 200 (application/json)
+    + Attributes
+      - hook (WebhookDefinition)
+
+
+#### PUT
+Update a webhook definition. This needs to send the full webhook payload without the secret.
++ Request (application/json)
+  + Headers
+
+              Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+              X-Api-Version: v1
+
+  + Attributes (WebhookDefinition Update)
+
+
++ Response 200 (application/json)
+  + Attributes (WebhookDefinition Updated)
+
+#### DELETE
+Delete a webhook definition. This will remove all associated data with it, including requests and logs of requests.    
++ Request (application/json)
+  + Headers
+
+              Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+              X-Api-Version: v1
+
++ Response 202 (application/json)
+
+# Data Structures
+
+## WebhookDefinition (object)
+
+- id: `50c09bd9-027d-4c60-a835-02b25026e046` (string) - ID of the webhook
+- name: `Production Webhook` (string) - Name of the webhook
+
+## WebhookDefinition Updated (object)
+
+- id: `50c09bd9-027d-4c60-a835-02b25026e046` (string) - ID of the webhook
+- name: `Staging Webhook` (string) - Name of the webhook
+
+## WebhookDefinition Update (object)
+
+- name: `Staging Webhook` (string) - Name of the webhook
+
+
+
+## WebhookDefinition Created (object)
+
+- id: `50c09bd9-027d-4c60-a835-02b25026e046` (string) - ID of the webhook
+- name: `Production Webhook` (string) - Name of the webhook
+- secret: `17f4ac16-5185-4c6a-bf6d-dfbc31dd2e88` (string) - ID of the webhook
+
+## WebhookDefinition Create (object)
+- name: `Production Webhook` (string) - Name of the webhook
+
+## AuthorizationToken (string)
+HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+
+# Group Requests
+
+## Requests Collections [/requests/{hook_id}?{page}=1&{limit}=100]
+
+### GET
+
+Returns all submitted requests for a webhook and their status. Pagination 
++ Parameters
+    + hook_id: `87852971ddb7-4763-9f25-e5a8244fe6da` (required, string) - ID of the Hook in form of an UUID
+    + page: 1 (number, optional) - Defines the page number you are requesting
+      + Default: `1`
+    + limit: 20 (number, optional) - Defines how many entries per page should be returned
+      + Default: `100`
+
+
++ Request (application/json)
+  + Headers
+
+            Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+            X-Api-Version: v1
+
+
++ Response 200 (application/json)
+    + Attributes
+        - requests (array[Request])
+
+
+
+
+# Data Structures
+## Request (object)
+- id: `c5955f1a-3fad-4312-8e53-f26e9fe31464` (string) - ID of the submitted request
+- status: `success|error` (string) - Status indicating if the request could be delivered
+- created_at: `2019-02-09T08:11:29.561Z` (string) - Timestamp when the request was submitted: ISO 8601
+
+
+# Group Logs
+You can request the logs for specific requests using this API.
+## Logs Collections [/logs/{request_id}/]
+
+### GET
+
++ Parameters
+    + request_id: `c5955f1a-3fad-4312-8e53-f26e9fe31464` (required, string) - ID of the Hook in form of an integer
+The collections endpoint returns the webhook definitions that have logs available
+
++ Request (application/json)
+  + Headers
+
+            Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
+            X-Api-Version: v1
+
+
++ Response 200 (application/json)
+    + Attributes
+        - logs (array[Log])
+
+# Data Structures
+## ResponseHeaders (object)
+- `Content-Type`: `application/json`
+- `SomeHeader`: `Value`
+
+## Log (object)
+- id: `c5955f1a-3fad-4312-8e53-f26e9fe31464` (string) - ID of the log entry.
+- response_headers (ResponseHeaders) - The headers returned when executing the request.
+- response_body: 200 OK (string) - The body  returned when executing the request.
+- created_at: `2019-02-09T08:11:29.561Z` # ISO 8601 - Timestamp when the log entry was created: ISO 8601
+
+
+
+
+
+# Group Publish Webhooks
+The publish webhook allows you to submit new requests.
+We will return an id to you that you can use to request the status and logs for the requests performed.
