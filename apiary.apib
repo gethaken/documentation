@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.haken.run
+HOST: https://api.haken.run/v1/
 
 # Haken
 
@@ -33,7 +33,6 @@ You can set how many items per page you want to receive, and which page you want
 
   + Headers
 
-            X-Api-Version: v1
             Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
 
 
@@ -49,7 +48,6 @@ It will return the created webhook and the *secret* needed to submit new request
 + Request (application/json)
     + Headers
 
-            X-Api-Version: v1
             Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
     + Attributes (WebhookDefinition Create)
 
@@ -75,7 +73,6 @@ Returns an individual webhook definition.
   + Headers
 
               Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
-              X-Api-Version: v1
 
 
 + Response 200 (application/json)
@@ -89,7 +86,6 @@ Update a webhook definition. This needs to send the full webhook payload without
   + Headers
 
               Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
-              X-Api-Version: v1
 
   + Attributes (WebhookDefinition Update)
 
@@ -103,7 +99,6 @@ Delete a webhook definition. This will remove all associated data with it, inclu
   + Headers
 
               Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
-              X-Api-Version: v1
 
 + Response 202 (application/json)
 
@@ -156,7 +151,6 @@ Returns all submitted requests for a webhook and their status. Pagination
   + Headers
 
             Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
-            X-Api-Version: v1
 
 
 + Response 200 (application/json)
@@ -187,7 +181,6 @@ The collections endpoint returns the webhook definitions that have logs availabl
   + Headers
 
             Authentication: Bearer HKN-01853054-2e6e-4e57-a06f-5e94f0b151f9
-            X-Api-Version: v1
 
 
 + Response 200 (application/json)
@@ -212,3 +205,6 @@ The collections endpoint returns the webhook definitions that have logs availabl
 # Group Publish Webhooks
 The publish webhook allows you to submit new requests.
 We will return an id to you that you can use to request the status and logs for the requests performed.
+
+
+##  []
